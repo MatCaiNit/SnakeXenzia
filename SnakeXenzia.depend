@@ -39,7 +39,7 @@
 	<string>
 	<vector>
 
-1680851801 d:\codeblocks\snakexenzia\texturemanager.h
+1680924576 d:\codeblocks\snakexenzia\texturemanager.h
 	<string>
 	<SDL.h>
 	<map>
@@ -49,33 +49,6 @@
 	"Game.h"
 
 1680851801 source:d:\codeblocks\snakexenzia\texturemanager.cpp
-	"TextureManager.h"
-	<SDL_image.h>
-	<string>
-
-1680854487 source:c:\snakexenzia\game.cpp
-	"Game.h"
-	"TextureManager.h"
-	<SDL_ttf.h>
-	<iostream>
-	<cstdlib>
-
-1680854019 c:\snakexenzia\game.h
-	"SDL.h"
-	"SDL_ttf.h"
-	<string>
-	<vector>
-
-1680851801 c:\snakexenzia\texturemanager.h
-	<string>
-	<SDL.h>
-	<map>
-
-1680851925 source:c:\snakexenzia\main.cpp
-	<SDL.h>
-	"Game.h"
-
-1680851801 source:c:\snakexenzia\texturemanager.cpp
 	"TextureManager.h"
 	<SDL_image.h>
 	<string>
