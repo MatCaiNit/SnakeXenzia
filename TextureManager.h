@@ -22,7 +22,7 @@ class TextureManager{
         static TextureManager* s_pInstance;
         TextureManager(){};
         ~TextureManager(){};
-        map<string, SDL_Texture*> m_textureMap;
+        map<string, SDL_Texture*> textureMap;
 };
 typedef TextureManager TheTextureManager;
 #endif // TEXTUREMANAGER_H

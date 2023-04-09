@@ -6,13 +6,13 @@
 using namespace std;
 int m_currentFrame;
 Game::Game(){
-    m_pWindow=NULL;
-    m_pRenderer=NULL;
+    gameWindow=NULL;
+    gameRenderer=NULL;
     isRunning=false;
 }
  SDL_Texture* Game::str_to_texture(string str){
-    SDL_Surface* textSurface = TTF_RenderText_Solid( gFont, str.c_str(), {0,0,0} );
-    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(m_pRenderer,textSurface);
+    SDL_Surface* textSurface = TTF_RenderText_Solid( Font, str.c_str(), {0,0,0} );
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(gameRenderer,textSurface);
     mWidth=textSurface->w;
     mHeight =textSurface->h;
     SDL_FreeSurface(textSurface);
@@ -24,15 +24,15 @@ bool Game::gameInit(const char* title, int xpos, int ypos, int width, int height
     if(SDL_Init(SDL_INIT_EVERYTHING) == 0){
         cout << "SDL init success\n";
  // init the window
-        m_pWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-        if(m_pWindow != 0) {// window init success
+        gameWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
+        if(gameWindow != 0) {// window init success
 
             cout << "window creation success\n";
-            m_pRenderer = SDL_CreateRenderer(m_pWindow, -1, SDL_RENDERER_PRESENTVSYNC);
-            if(m_pRenderer != 0){ // renderer init success
+            gameRenderer = SDL_CreateRenderer(gameWindow, -1, SDL_RENDERER_PRESENTVSYNC);
+            if(gameRenderer != 0){ // renderer init success
 
                 cout << "renderer creation success\n";
-                SDL_SetRenderDrawColor(m_pRenderer,255,255,255,255);
+                SDL_SetRenderDrawColor(gameRenderer,255,255,255,255);
                 }
             else{
                 cout << "renderer init fail\n";
@@ -52,24 +52,24 @@ bool Game::gameInit(const char* title, int xpos, int ypos, int width, int height
     isRunning = true;
     gameOver = true;
     Delay=200;
-    TheTextureManager::Instance()->load("assets/snakeblock.png", "snakeblock", m_pRenderer);
-    TheTextureManager::Instance()->load("assets/animation.png", "animation", m_pRenderer);
-    TheTextureManager::Instance()->load("assets/apple.png", "apple", m_pRenderer);
+    TheTextureManager::Instance()->load("assets/snakeblock.png", "snakeblock", gameRenderer);
+    TheTextureManager::Instance()->load("assets/animation.png", "animation", gameRenderer);
+    TheTextureManager::Instance()->load("assets/apple.png", "apple", gameRenderer);
     TTF_Init();
-    gFont = TTF_OpenFont( "Raleway-Medium.ttf", 28 );
+    Font = TTF_OpenFont( "Raleway-Medium.ttf", 28 );
     apl.first=block_size*2;
     apl.second=block_size*2;
     return true;
 }
 void Game::gameRender(){
-    SDL_RenderClear(m_pRenderer);
+    SDL_RenderClear(gameRenderer);
     SDL_Rect k; k.x=0; k.y=0; k.w=mWidth; k.h=mHeight;
-    SDL_RenderCopy(m_pRenderer,str_to_texture("Score: "+to_string(score)),NULL,&k);
+    SDL_RenderCopy(gameRenderer,str_to_texture("Score: "+to_string(score)),NULL,&k);
     for(int i=0;i<lengthofSnake-1;++i)
-        TheTextureManager::Instance()->draw("snakeblock", Snake_block[i].first,Snake_block[i].second, block_size , block_size , m_pRenderer);
-        TheTextureManager::Instance()->drawFrame("animation", Snake_block[lengthofSnake-1].first,Snake_block[lengthofSnake-1].second, block_size , block_size , 1, frame, m_pRenderer, SDL_FLIP_NONE,angle);
-        TheTextureManager::Instance()->draw("apple", apl.first,apl.second, block_size , block_size , m_pRenderer);
-        SDL_RenderPresent(m_pRenderer);
+        TheTextureManager::Instance()->draw("snakeblock", Snake_block[i].first,Snake_block[i].second, block_size , block_size , gameRenderer);
+        TheTextureManager::Instance()->drawFrame("animation", Snake_block[lengthofSnake-1].first,Snake_block[lengthofSnake-1].second, block_size , block_size , 1, frame, gameRenderer, SDL_FLIP_NONE,angle);
+        TheTextureManager::Instance()->draw("apple", apl.first,apl.second, block_size , block_size , gameRenderer);
+        SDL_RenderPresent(gameRenderer);
 }
 void Game::handleEvents(){
     SDL_Event event;
@@ -119,10 +119,10 @@ void Game::handleEvents(){
 }
 void Game::gameClean(){
     cout << "cleaning game\n";
-    TTF_CloseFont( gFont );
-    gFont = NULL;
-    SDL_DestroyWindow(m_pWindow);
-    SDL_DestroyRenderer(m_pRenderer);
+    TTF_CloseFont( Font );
+    Font = NULL;
+    SDL_DestroyWindow(gameWindow);
+    SDL_DestroyRenderer(gameRenderer);
     SDL_Quit();
 }
 void Game::gameUpdate(){

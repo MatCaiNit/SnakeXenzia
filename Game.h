@@ -27,10 +27,10 @@ class Game{
         int lengthofSnake=1;
         vector<pair<int,int>> Snake_block;
         pair<int,int> apl;
-        TTF_Font *gFont;
+        TTF_Font *Font;
         int posx=0,posy=0;
-        SDL_Window* m_pWindow;
-        SDL_Renderer* m_pRenderer;
+        SDL_Window* gameWindow;
+        SDL_Renderer* gameRenderer;
         bool isRunning,gameOver;
 };
 
