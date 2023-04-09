@@ -53,3 +53,33 @@
 	<SDL_image.h>
 	<string>
 
+1681050691 source:c:\snakexenzia\game.cpp
+	"Game.h"
+	"TextureManager.h"
+	<SDL_ttf.h>
+	<iostream>
+	<cstdlib>
+
+1681049142 c:\snakexenzia\game.h
+	"SDL.h"
+	"SDL_ttf.h"
+	<string>
+	<vector>
+	<iostream>
+
+1681047825 c:\snakexenzia\texturemanager.h
+	<string>
+	<SDL.h>
+	<map>
+	<iostream>
+
+1681047825 source:c:\snakexenzia\texturemanager.cpp
+	"TextureManager.h"
+	<SDL_image.h>
+	<string>
+	<iostream>
+
+1681049149 source:c:\snakexenzia\main.cpp
+	<SDL.h>
+	"Game.h"
+
