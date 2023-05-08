@@ -17,6 +17,7 @@ class Game{
         SDL_Texture* str_to_texture(string str);
         void gameClean();
         bool gameIsRunning() { return isRunning; }
+
     private:
         const int block_size=50;
         double angle=0;
