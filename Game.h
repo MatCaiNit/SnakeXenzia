@@ -15,6 +15,7 @@ class Game{
         void gameUpdate();
         void handleEvents();
         SDL_Texture* str_to_texture(string str);
+        SDL_Texture* str_to_texture2(string str);
         void gameClean();
         bool gameIsRunning() { return isRunning; }
 
@@ -32,7 +33,7 @@ class Game{
         int posx=0,posy=0;
         SDL_Window* gameWindow;
         SDL_Renderer* gameRenderer;
-        bool isRunning,gameOver;
+        bool isRunning,gameOver, isMenu;
 };
 
 #endif // GAME_H

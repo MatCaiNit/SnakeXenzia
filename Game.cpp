@@ -7,7 +7,7 @@
 #define SCREEN_WIDTH  1000
 #define SCREEN_HEIGHT 700
 using namespace std;
-void gameOver(SDL_Renderer* renderer, SDL_Event event, int scale, int wScale, int tailLength) {
+/*void gameOver(SDL_Renderer* renderer, SDL_Event event, int scale, int wScale, int tailLength) {
 	SDL_Color Red = { 255, 0, 0 };
 	SDL_Color White = { 255, 255, 255 };
 	SDL_Color Black = { 0, 0, 0 };
@@ -125,6 +125,7 @@ void youWin(SDL_Renderer* renderer, SDL_Event event, int scale, int wScale, int 
 	}
 
 }
+*/
 
 Game::Game(){
     gameWindow=NULL;
@@ -139,6 +140,15 @@ Game::Game(){
     mHeight =textSurface->h;
     SDL_FreeSurface(textSurface);
     return textTexture;}
+}
+SDL_Texture* Game::str_to_texture2(string str){
+    if(!gameOver){
+    SDL_Surface* textSurface2 = TTF_RenderText_Solid( Font, str.c_str(), {255,0,0} );
+    SDL_Texture* textTexture2 = SDL_CreateTextureFromSurface(gameRenderer,textSurface2);
+    mWidth=textSurface2->w;
+    mHeight =textSurface2->h;
+    SDL_FreeSurface(textSurface2);
+    return textTexture2;}
 }
 bool Game::gameInit(const char* title, int xpos, int ypos, int width, int height, int flags){
     Snake_block.push_back({0,0});
@@ -176,20 +186,30 @@ bool Game::gameInit(const char* title, int xpos, int ypos, int width, int height
     cout << "init success\n";
     isRunning = true;
     gameOver = false;
+    isMenu = true;
     Delay=200;
     TheTextureManager::Instance()->load("assets/snakeblock.png", "snakeblock", gameRenderer);
     TheTextureManager::Instance()->load("assets/animation.png", "animation", gameRenderer);
     TheTextureManager::Instance()->load("assets/apple.png", "apple", gameRenderer);
     TheTextureManager::Instance()->load("assets/gameover.jpg", "gameover", gameRenderer);
+    TheTextureManager::Instance()->load("assets/backgroundsnake.jpg", "backgroundsnake", gameRenderer);
     TTF_Init();
-    Font = TTF_OpenFont( "Raleway-Medium.ttf", 28 );
+    Font = TTF_OpenFont( "Raleway-Medium.ttf", 50 );
     apl.first=block_size*2;
     apl.second=block_size*2;
     return true;
 }
 void Game::gameRender(){
     SDL_RenderClear(gameRenderer);
-    if(!gameOver){
+    if(gameOver == false && isMenu == true){
+        TheTextureManager::Instance()->draw("backgroundsnake", 0,0, SCREEN_WIDTH , SCREEN_HEIGHT , gameRenderer);
+        SDL_Rect start; start.x=100; start.y=100; start.w=mWidth; start.h=mHeight;
+        SDL_RenderCopy(gameRenderer,str_to_texture("Start "),NULL,&start);
+        SDL_Rect exit; exit.x=100; exit.y=150; exit.w=mWidth; exit.h=mHeight;
+        SDL_RenderCopy(gameRenderer,str_to_texture("Exit "),NULL,&exit);
+
+    }
+    if(gameOver== false && isMenu == false){
         SDL_Rect k; k.x=0; k.y=0; k.w=mWidth; k.h=mHeight;
         SDL_RenderCopy(gameRenderer,str_to_texture("Score: "+to_string(score)),NULL,&k);
         for(int i=0;i<lengthofSnake-1;++i){
@@ -198,14 +218,18 @@ void Game::gameRender(){
         TheTextureManager::Instance()->drawFrame("animation", Snake_block[lengthofSnake-1].first,Snake_block[lengthofSnake-1].second, block_size , block_size , 1, frame, gameRenderer, SDL_FLIP_NONE,angle);
         TheTextureManager::Instance()->draw("apple", apl.first,apl.second, block_size , block_size , gameRenderer);
 
-    }else if(gameOver){
+    } if(gameOver == true){
+        SDL_Rect exit; exit.x=100; exit.y=150; exit.w=mWidth; exit.h=mHeight;
+        SDL_RenderCopy(gameRenderer,str_to_texture("Press Space to exit "),NULL,&exit);
         TheTextureManager::Instance()->draw("gameover", 0,0, SCREEN_WIDTH , SCREEN_HEIGHT , gameRenderer);
+
+
     }
     SDL_RenderPresent(gameRenderer);
 
 }
 void Game::handleEvents(){
-    if(!gameOver){
+    if(gameOver == false && isMenu == false){
         SDL_Event event;
             if(SDL_PollEvent(&event)){
                 switch (event.type){
@@ -250,6 +274,29 @@ void Game::handleEvents(){
                 break;
                 }
             }
+    }else if(gameOver == false && isMenu == true){
+        SDL_Event event;
+        if(SDL_PollEvent(&event)){
+             switch (event.type){
+                 case SDL_QUIT:
+                        isRunning = false;
+                        break;
+                 case SDL_MOUSEBUTTONDOWN:
+                     if(event.button.x >= 100 && event.button.x <=186 && event.button.y >= 100 && event.button.y <= 150){ isMenu = false;}
+                     if(event.button.x >= 100 && event.button.x <=186 && event.button.y >= 150 && event.button.y <= 200){
+                            isRunning = false;
+                            gameOver = true;
+                     }
+                        break;
+                 default:
+                    break;
+             }
+
+        }
+
+
+
+
     }
     else{
         SDL_Event event;
@@ -275,6 +322,7 @@ void Game::gameClean(){
     cout << "cleaning game\n";
     TTF_CloseFont( Font );
     Font = NULL;
+    TTF_Quit();
     SDL_DestroyWindow(gameWindow);
     SDL_DestroyRenderer(gameRenderer);
     SDL_Quit();
