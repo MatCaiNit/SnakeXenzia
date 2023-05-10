@@ -133,22 +133,52 @@ Game::Game(){
     isRunning=false;
 }
  SDL_Texture* Game::str_to_texture(string str){
-    if(!gameOver){
+    if(gameOver == false && mouseIn1 == false){
     SDL_Surface* textSurface = TTF_RenderText_Solid( Font, str.c_str(), {0,0,0} );
     SDL_Texture* textTexture = SDL_CreateTextureFromSurface(gameRenderer,textSurface);
     mWidth=textSurface->w;
     mHeight =textSurface->h;
     SDL_FreeSurface(textSurface);
     return textTexture;}
+    if(gameOver== false && mouseIn1 == true){
+    SDL_Surface* textSurface = TTF_RenderText_Solid( Font, str.c_str(), {255,0,0} );
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(gameRenderer,textSurface);
+    mWidth=textSurface->w;
+    mHeight =textSurface->h;
+    SDL_FreeSurface(textSurface);
+    return textTexture;}
+    if(gameOver){
+    SDL_Surface* textSurface = TTF_RenderText_Solid( Font, str.c_str(), {0,0,0} );
+    SDL_Texture* textTexture = SDL_CreateTextureFromSurface(gameRenderer,textSurface);
+    mWidth=textSurface->w;
+    mHeight =textSurface->h;
+    SDL_FreeSurface(textSurface);
+    return textTexture;}
+
 }
 SDL_Texture* Game::str_to_texture2(string str){
-    if(!gameOver){
+    if(gameOver == false && mouseIn2 == false){
+    SDL_Surface* textSurface2 = TTF_RenderText_Solid( Font, str.c_str(), {0,0,0} );
+    SDL_Texture* textTexture2 = SDL_CreateTextureFromSurface(gameRenderer,textSurface2);
+    mWidth=textSurface2->w;
+    mHeight =textSurface2->h;
+    SDL_FreeSurface(textSurface2);
+    return textTexture2;}
+    if(gameOver== false && mouseIn2 == true){
     SDL_Surface* textSurface2 = TTF_RenderText_Solid( Font, str.c_str(), {255,0,0} );
     SDL_Texture* textTexture2 = SDL_CreateTextureFromSurface(gameRenderer,textSurface2);
     mWidth=textSurface2->w;
     mHeight =textSurface2->h;
     SDL_FreeSurface(textSurface2);
     return textTexture2;}
+    if(gameOver){
+    SDL_Surface* textSurface2 = TTF_RenderText_Solid( Font, str.c_str(), {0,0,0} );
+    SDL_Texture* textTexture2 = SDL_CreateTextureFromSurface(gameRenderer,textSurface2);
+    mWidth=textSurface2->w;
+    mHeight =textSurface2->h;
+    SDL_FreeSurface(textSurface2);
+    return textTexture2;}
+
 }
 bool Game::gameInit(const char* title, int xpos, int ypos, int width, int height, int flags){
     Snake_block.push_back({0,0});
@@ -187,6 +217,8 @@ bool Game::gameInit(const char* title, int xpos, int ypos, int width, int height
     isRunning = true;
     gameOver = false;
     isMenu = true;
+    mouseIn1 = false;
+    mouseIn2 = false;
     Delay=200;
     TheTextureManager::Instance()->load("assets/snakeblock.png", "snakeblock", gameRenderer);
     TheTextureManager::Instance()->load("assets/animation.png", "animation", gameRenderer);
@@ -206,22 +238,25 @@ void Game::gameRender(){
         SDL_Rect start; start.x=100; start.y=100; start.w=mWidth; start.h=mHeight;
         SDL_RenderCopy(gameRenderer,str_to_texture("Start "),NULL,&start);
         SDL_Rect exit; exit.x=100; exit.y=150; exit.w=mWidth; exit.h=mHeight;
-        SDL_RenderCopy(gameRenderer,str_to_texture("Exit "),NULL,&exit);
+        SDL_RenderCopy(gameRenderer,str_to_texture2("Exit "),NULL,&exit);
 
     }
     if(gameOver== false && isMenu == false){
         SDL_Rect k; k.x=0; k.y=0; k.w=mWidth; k.h=mHeight;
-        SDL_RenderCopy(gameRenderer,str_to_texture("Score: "+to_string(score)),NULL,&k);
+        SDL_RenderCopy(gameRenderer,str_to_texture2("Score: "+to_string(score)),NULL,&k);
         for(int i=0;i<lengthofSnake-1;++i){
             TheTextureManager::Instance()->draw("snakeblock", Snake_block[i].first,Snake_block[i].second, block_size , block_size , gameRenderer);
         }
         TheTextureManager::Instance()->drawFrame("animation", Snake_block[lengthofSnake-1].first,Snake_block[lengthofSnake-1].second, block_size , block_size , 1, frame, gameRenderer, SDL_FLIP_NONE,angle);
         TheTextureManager::Instance()->draw("apple", apl.first,apl.second, block_size , block_size , gameRenderer);
 
-    } if(gameOver == true){
-        SDL_Rect exit; exit.x=100; exit.y=150; exit.w=mWidth; exit.h=mHeight;
-        SDL_RenderCopy(gameRenderer,str_to_texture("Press Space to exit "),NULL,&exit);
+    } if(gameOver == true && isMenu == false){
+
         TheTextureManager::Instance()->draw("gameover", 0,0, SCREEN_WIDTH , SCREEN_HEIGHT , gameRenderer);
+        SDL_Rect exit; exit.x=250; exit.y=600; exit.w=mWidth; exit.h=mHeight;
+        //cout<<mWidth<<" "<<mHeight<<endl;
+
+        SDL_RenderCopy(gameRenderer,str_to_texture("-Press Space to exit- "),NULL,&exit);
 
 
     }
@@ -277,6 +312,11 @@ void Game::handleEvents(){
     }else if(gameOver == false && isMenu == true){
         SDL_Event event;
         if(SDL_PollEvent(&event)){
+            if(event.button.x >= 100 && event.button.x <=186 && event.button.y >= 100 && event.button.y <= 150){ mouseIn1 = true;}
+            else if(event.button.x >= 100 && event.button.x <=186 && event.button.y >= 150 && event.button.y <= 200){ mouseIn2 = true;}
+            else{mouseIn1 = false;
+                mouseIn2 = false;
+                }
              switch (event.type){
                  case SDL_QUIT:
                         isRunning = false;

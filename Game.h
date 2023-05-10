@@ -33,7 +33,7 @@ class Game{
         int posx=0,posy=0;
         SDL_Window* gameWindow;
         SDL_Renderer* gameRenderer;
-        bool isRunning,gameOver, isMenu;
+        bool isRunning,gameOver, isMenu, mouseIn1, mouseIn2;
 };
 
 #endif // GAME_H
