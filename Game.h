@@ -26,8 +26,8 @@ class Game{
         int Delay,Mark=0;
         int frame=0;
         int x=0,y=0,mWidth,mHeight;
-        int lengthofSnake=1;
-        vector<pair<int,int>> Snake_block;
+        int length=1;
+        vector<pair<int,int>> Snake;
         pair<int,int> apl;
         TTF_Font *Font;
         int posx=0,posy=0;
