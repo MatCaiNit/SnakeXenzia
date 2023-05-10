@@ -285,7 +285,7 @@ void Game::handleEvents(){
                      if(event.button.x >= 100 && event.button.x <=186 && event.button.y >= 100 && event.button.y <= 150){ isMenu = false;}
                      if(event.button.x >= 100 && event.button.x <=186 && event.button.y >= 150 && event.button.y <= 200){
                             isRunning = false;
-                            gameOver = true;
+                           // gameOver = true;
                      }
                         break;
                  default:
@@ -293,10 +293,6 @@ void Game::handleEvents(){
              }
 
         }
-
-
-
-
     }
     else{
         SDL_Event event;
