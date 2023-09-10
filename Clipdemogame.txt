@@ -1,8 +1,9 @@
 Em là Nguyễn Mạnh Quỳnh
 MSV: 22028241
-Nếu có gì thay đổi thì do em dùng git ko update đc code mới vì cái file nó bị unmerged nên ko pull được vì muốn push cái git nó kêu
-là phải lỗi non-fast-forward nên cần pull về xong push ạ. Còn thời gian thì em đã lầm mấy cái video demo game trước đúng thời gian ạ nên nếu
-bị thay đổi gì mong thầy thông cảm ạ.
 Đây là clip demo con rắn của em. Nếu thầy không mở đươc file có thể xem qua trên Youtube hoặc lên Google Drive
+Nếu thời gian của cái clip có đổi mà thầy nghĩ là em nộp muộn thì không phải vậy ạ. Em cần update cái code mới lên git mà nó thông báo mấy cái file em up lên git nhờ upload file lên web nó bị lỗi unmerged. Để push lên thì git băt phải pull về ạ. Mà khi em push lên nó bị lỗi non-fast-forward. Để fix nó em phải pull về mà nó bị lỗi unmerged nên em phải đổi cái têm file upload( vì nó có dấu )trên web xong dùng lệnh git merge --abort
+để coi như xóa cái unmerged xong mới  push nên đuượ ạ.
+(Cái này tránh thầy hiểu nhầm nữa  nên em phải giải thích ạ )
+
 Youtube: https://youtu.be/xJPSdfRPsz8
 Drive: https://drive.google.com/file/d/1srey5xwqScCpVpmjkxObVYzYfB-07I1d/view?usp=sharing
